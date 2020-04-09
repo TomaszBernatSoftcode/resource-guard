@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block page_body %}
+    <div class="container mt-4">
+        <div class="row my-4 justify-content-center">
+            <div class="col-md-6">
+                <form method="post">{% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_url_route">Url route:</label>
+                        <input type="text"
+                               class="form-control"
+                               name="url_route"
+                               maxlength="2048"
+                               id="id_url_route"
+                               placeholder="Type or paste your url here"
+                               aria-describedby="urlInputHelp"
+                        >
+                        <small id="urlInputHelp" class="form-text text-muted">Size of url is limited to 2048 characters.</small>
+                    </div>
+                    <div class="row justify-content-between">
+                        <button type="submit" class="btn btn-success ml-3">Save</button>
+                        <a href="{% url 'secure_file' %}" class="btn btn-light mr-3">Add new file</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

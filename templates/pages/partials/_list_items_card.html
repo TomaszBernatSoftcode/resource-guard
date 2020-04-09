@@ -1,0 +1,27 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">
+            {{ username }} {{ type }} [{{ current }} / {{ max }}{% if type == 'files' %} MB{% endif %}]:
+        </h5>
+        {% if current < max %}
+            <a href="{{ create_new_url }}" class="btn btn-light my-2">{{ create_new_message }}</a>
+        {% endif %}
+        <div class="list-group mt-2">
+            {% if items|length == 0 %}
+                <a href="#" class="list-group-item list-group-item-action disabled">
+                    {{ no_items_message }}
+                </a>
+            {% else %}
+                {% for item in items %}
+
+                    <a href="{{ item.resource_route }}"
+                       class="list-group-item list-group-item-action"
+                    >
+                        Resource <b>{{ item.resource_route }}</b> is accessible till <b>{{ item.expire_ts }}</b>
+                    </a>
+
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>

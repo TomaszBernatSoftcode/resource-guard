@@ -1,0 +1,26 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <button class="navbar-brand btn btn-light-outlined" disabled style="cursor: context-menu">Resource guard</button>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item ml-3 active">
+                <a class="nav-link" href="{% url 'user_resources' %}">Resources list</a>
+            </li>
+        </ul>
+        <form class="form-inline">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+        </form>
+        <form class="form-inline">
+            <a id="changeUserPasswordLink" class="nav-link" href="#">Change password</a>
+        </form>
+    </div>
+    <script>
+        $('#changeUserPasswordLink').click(function (event) {
+            event.preventDefault()
+            window.location.href = '/admin/password_change/'
+        })
+    </script>
+</nav>
