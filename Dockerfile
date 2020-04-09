@@ -31,4 +31,4 @@ RUN adduser -D myuser
 USER myuser
 
 # run gunicorn
-CMD gunicorn hello_django.wsgi:application --bind 0.0.0.0:$PORT
+CMD gunicorn file_guard.wsgi:application --bind 0.0.0.0:$PORT
