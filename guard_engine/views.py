@@ -185,7 +185,7 @@ class SecuredFileCreate(LoginRequiredMixin, CreateView):
             return redirect('secure_file')
         if received_file.size > settings.FILE_LIMIT_SIZE:
             return redirect('secure_file')
-        if files_size + received_file.size > settings.USER_FILES_LIMIT:
+        if files_size and ((files_size + received_file.size) > settings.USER_FILES_LIMIT):
             return redirect('secure_file')
 
         form.instance.user = request_user

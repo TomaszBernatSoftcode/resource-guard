@@ -119,6 +119,9 @@ def secure_new_resource(request):
 @permission_classes([IsAuthenticated])
 def details_of_resources(request):
     request_user = request.user
+    if not request_user.is_active or not request_user.is_staff or not request_user.is_superuser:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
     verification_ts = timezone.now()
     SecuredUrl.objects.filter(user=request_user, expire_ts__lt=verification_ts).delete()
     SecuredFile.objects.filter(user=request_user, expire_ts__lt=verification_ts).delete()

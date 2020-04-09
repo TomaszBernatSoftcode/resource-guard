@@ -63,9 +63,6 @@
         $('#redirectButton').click(function (event) {
             event.preventDefault();
 
-            $('#resourcePassword').prop('disabled', true);
-            $('#redirectButton').addClass('disabled');
-
             $.ajax({
                 url: '/api/check-resource-password',
                 type: "POST",
