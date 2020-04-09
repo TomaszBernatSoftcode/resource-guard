@@ -1,5 +1,6 @@
 import os
 
+from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.contrib.auth.models import User
@@ -31,7 +32,12 @@ class SecuredUrl(SecuredResource):
 
 
 def upload_to(instance, filename):
-    return 'media/{}/{}'.format(instance.user.username, filename)
+    upload_path = '{}/{}'.format(
+        instance.user.username, filename
+    )
+    if settings.DEBUG:
+        return 'media/{}'.format(upload_path)
+    return upload_path
 
 
 class SecuredFile(SecuredResource):
