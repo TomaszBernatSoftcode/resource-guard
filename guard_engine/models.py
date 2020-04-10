@@ -57,7 +57,7 @@ class SecuredFile(SecuredResource):
 def auto_delete_file_on_delete(sender, instance, **kwargs):
     if instance.persisted_file:
         dbx = dropbox.Dropbox(settings.DROPBOX_OAUTH2_TOKEN)
-        dbx.files_delete_v2("{}{}".format(settings.DROPBOX_ROOT_PATH, instance.persisted_file.path))
+        dbx.files_delete_v2("{}{}".format(settings.DROPBOX_ROOT_PATH, instance.persisted_file.name))
 
 
 @receiver(models.signals.pre_save, sender=SecuredFile)
@@ -73,4 +73,4 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
     new_file = instance.persisted_file
     if not old_file == new_file:
         dbx = dropbox.Dropbox(settings.DROPBOX_OAUTH2_TOKEN)
-        dbx.files_delete_v2("{}{}".format(settings.DROPBOX_ROOT_PATH, instance.persisted_file.path))
+        dbx.files_delete_v2("{}{}".format(settings.DROPBOX_ROOT_PATH, instance.persisted_file.name))
