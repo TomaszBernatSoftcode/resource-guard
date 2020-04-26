@@ -36,7 +36,7 @@ def upload_to(instance, filename):
     upload_path = '{}/{}'.format(
         instance.user.username, filename
     )
-    if settings.DEBUG:
+    if settings.DEBUG or settings.TESTS:
         return 'media/{}'.format(upload_path)
     return upload_path
 
@@ -56,8 +56,11 @@ class SecuredFile(SecuredResource):
 @receiver(models.signals.post_delete, sender=SecuredFile)
 def auto_delete_file_on_delete(sender, instance, **kwargs):
     if instance.persisted_file:
-        dbx = dropbox.Dropbox(settings.DROPBOX_OAUTH2_TOKEN)
-        dbx.files_delete_v2("{}{}".format(settings.DROPBOX_ROOT_PATH, instance.persisted_file.name))
+        if not settings.TESTS and not settings.DEBUG:
+            dbx = dropbox.Dropbox(settings.DROPBOX_OAUTH2_TOKEN)
+            dbx.files_delete_v2("{}{}".format(settings.DROPBOX_ROOT_PATH, instance.persisted_file.name))
+        elif os.path.isfile(instance.persisted_file.path):
+            os.remove(instance.persisted_file.path)
 
 
 @receiver(models.signals.pre_save, sender=SecuredFile)
@@ -72,5 +75,8 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
 
     new_file = instance.persisted_file
     if not old_file == new_file:
-        dbx = dropbox.Dropbox(settings.DROPBOX_OAUTH2_TOKEN)
-        dbx.files_delete_v2("{}{}".format(settings.DROPBOX_ROOT_PATH, instance.persisted_file.name))
+        if not settings.TESTS and not settings.DEBUG:
+            dbx = dropbox.Dropbox(settings.DROPBOX_OAUTH2_TOKEN)
+            dbx.files_delete_v2("{}{}".format(settings.DROPBOX_ROOT_PATH, instance.persisted_file.name))
+        if os.path.isfile(old_file.path):
+            os.remove(old_file.path)
