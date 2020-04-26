@@ -1,0 +1,18 @@
+ version: '3'
+
+  services:
+    db:
+      image: postgres
+      environment:
+        - POSTGRES_DB=postgres
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+    web:
+      build: ./dockerfile_debug_startup/Dockerfile
+      command: bash -c "python manage.py --database=docker_debug migrate && python manage.py --database=docker_debug runserver 0.0.0.0:8000"
+      volumes:
+        - .:/code
+      ports:
+        - "8000:8000"
+      depends_on:
+        - db
