@@ -82,20 +82,12 @@ WSGI_APPLICATION = 'file_guard.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'resource_guard',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    },
-    'docker_debug': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'db',
-        'PORT': 5432,
+        'ENGINE': os.environ.get('POSTGRES_ENGINE', default='django.db.backends.postgresql'),
+        'NAME': os.environ.get('POSTGRES_DB_NAME', default='postgres'),
+        'USER': os.environ.get('POSTGRES_DB_USER', default='postgres'),
+        'PASSWORD': os.environ.get('POSTGRES_DB_PASSWORD', default='postgres'),
+        'HOST': os.environ.get('POSTGRES_DB_HOST', default='db'),
+        'PORT': os.environ.get('POSTGRES_DB_PORT', default='5432'),
     }
 }
 
@@ -128,6 +120,11 @@ AUTH_PASSWORD_VALIDATORS = [
 LOGIN_REDIRECT_URL = 'user_resources'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'login'
+
+if DEBUG:
+    DJANGO_SUPERUSER_USERNAME = 'admin'
+    DJANGO_SUPERUSER_EMAIL = 'admin@mysite.com'
+    DJANGO_SUPERUSER_PASSWORD = 'admin'
 
 # Rest framework
 
